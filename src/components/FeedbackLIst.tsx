@@ -49,23 +49,44 @@ export default function FeedbackLIst() {
   const [isLoading,setIsLoading]=useState(false);// for loader
   const [errorMessage,setErrorMessage]=useState("");
 
+  // fetching data using the asycn/await 
   useEffect(()=>{
+    const feedbackItems =async()=>{
     setIsLoading(true);
-    fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks").
-    then((res)=>{
-      if(!res.ok){
+    try{
+      const response = await fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks"); 
+      if(!response.ok){
         throw new Error();
       }
-     return res.json()
-    }).
-    then((data)=>{
+      const data = await response.json();
       setFeedbackItems(data.feedbacks)
-    setIsLoading(false)
-    }).
-    catch(()=>{
-      setErrorMessage("Something went wrong");
-    })
+
+    }catch(e){
+      setErrorMessage("Something went wrong ,please try later");
+    }
+  }
+   feedbackItems(); // calling the function to fetch data
+
   },[])
+
+  // fetch data from API and update state  using useEffect hook 
+  // useEffect(()=>{
+  //   setIsLoading(true);
+  //   fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks").
+  //   then((res)=>{
+  //     if(!res.ok){
+  //       throw new Error();
+  //     }
+  //    return res.json()
+  //   }).
+  //   then((data)=>{
+  //     setFeedbackItems(data.feedbacks)
+  //   setIsLoading(false)
+  //   }).
+  //   catch(()=>{
+  //     setErrorMessage("Something went wrong");
+  //   })
+  // },[])
   return (
     <ol className="feedback-list">
       {
