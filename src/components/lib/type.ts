@@ -1,6 +1,6 @@
 export type TFeedbackItem ={
     id:number;
-    upoteCount:number;
+    upvoteCount:number;
     badeLetter:string;
     company:string;
     text:string;
