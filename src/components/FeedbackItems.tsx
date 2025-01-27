@@ -12,7 +12,7 @@ export default function FeedbackItems({feebackItems}:FeedbackItemsProps) {
                 <TriangleUpIcon/>
                 <span>{feebackItems.upvoteCount}</span>
             </button>
-            <div>{feebackItems.badeLetter}</div>
+            <div>{feebackItems.badgeLetter}</div>
             <div>
                 <p>{feebackItems.company}</p>
                 <p>{feebackItems.text}</p>
