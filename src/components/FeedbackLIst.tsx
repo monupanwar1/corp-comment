@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FeedbackItems from "./FeedbackItems";
 import { TFeedbackItem } from "./lib/type";
 import Spinner from "./Spinner";
+import ErrorMessage from "./ErrorMessage";
 
 
 // dummy data 
@@ -46,20 +47,32 @@ const examplefeedbackItems:TFeedbackItem[]=[
 export default function FeedbackLIst() {
   const [feedbackItems,setFeedbackItems]=useState([]);// for data 
   const [isLoading,setIsLoading]=useState(false);// for loader
+  const [errorMessage,setErrorMessage]=useState("");
 
   useEffect(()=>{
     setIsLoading(true);
     fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks").
-    then((res)=>res.json()).
+    then((res)=>{
+      if(!res.ok){
+        throw new Error();
+      }
+     return res.json()
+    }).
     then((data)=>{
       setFeedbackItems(data.feedbacks)
     setIsLoading(false)
-    });
+    }).
+    catch(()=>{
+      setErrorMessage("Something went wrong");
+    })
   },[])
   return (
     <ol className="feedback-list">
       {
         isLoading?<Spinner/>:null
+      }
+      {
+        errorMessage?<ErrorMessage message={errorMessage}/> :null
       }
       {feedbackItems.map((item)=>{
         return <FeedbackItems key={item.id} feebackItems={item}/>
