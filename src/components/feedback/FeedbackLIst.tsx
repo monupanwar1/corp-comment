@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import FeedbackItems from "./FeedbackItems";
 // import { TFeedbackItem } from "./lib/type";
-import Spinner from "./Spinner";
-import ErrorMessage from "./ErrorMessage";
+import Spinner from "../Spinner";
+import ErrorMessage from "../ErrorMessage";
 
-
-// dummy data 
+// dummy data
 // const examplefeedbackItems:TFeedbackItem[]=[
 //   {
 //   id: 1,
@@ -23,7 +22,7 @@ import ErrorMessage from "./ErrorMessage";
 //     company: "spotify",
 //     text: "spotify is the best app to listen movie",
 //     daysAgo: 11,
-  
+
 //     },
 //   {
 //     id: 3,
@@ -32,7 +31,7 @@ import ErrorMessage from "./ErrorMessage";
 //     company: "spotify",
 //     text: "spotify is the best app to listen movie",
 //     daysAgo: 11,
-  
+
 //     },
 //   {
 //     id: 2,
@@ -41,36 +40,36 @@ import ErrorMessage from "./ErrorMessage";
 //     company: "spotify",
 //     text: "spotify is the best app to listen movie",
 //     daysAgo: 11,
-  
+
 //     }
 // ]
 export default function FeedbackLIst() {
-  const [feedbackItems,setFeedbackItems]=useState([]);// for data 
-  const [isLoading,setIsLoading]=useState(false);// for loader
-  const [errorMessage,setErrorMessage]=useState("");
+  const [feedbackItems, setFeedbackItems] = useState([]); // for data
+  const [isLoading, setIsLoading] = useState(false); // for loader
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // fetching data using the asycn/await 
-  useEffect(()=>{
-    const feedbackItems =async()=>{
-    setIsLoading(true);
-    try{
-      const response = await fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks"); 
-      if(!response.ok){
-        throw new Error();
+  // fetching data using the asycn/await
+  useEffect(() => {
+    const feedbackItems = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks"
+        );
+        if (!response.ok) {
+          throw new Error();
+        }
+        const data = await response.json();
+        setFeedbackItems(data.feedbacks);
+        setIsLoading(false);
+      } catch (e) {
+        setErrorMessage("Something went wrong ,please try later");
       }
-      const data = await response.json();
-      setFeedbackItems(data.feedbacks)
-      setIsLoading(false);
+    };
+    feedbackItems(); // calling the function to fetch data
+  }, []);
 
-    }catch(e){
-      setErrorMessage("Something went wrong ,please try later");
-    }
-  }
-   feedbackItems(); // calling the function to fetch data
-
-  },[])
-
-  // fetch data from API and update state  using useEffect hook 
+  // fetch data from API and update state  using useEffect hook
   // useEffect(()=>{
   //   setIsLoading(true);
   //   fetch("https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks").
@@ -90,21 +89,16 @@ export default function FeedbackLIst() {
   // },[])
   return (
     <ol className="feedback-list">
+      {/* show loading spinner if data is loading */}
+      {isLoading && <Spinner />}
 
-       {/* show loading spinner if data is loading */}
-       {isLoading && <Spinner/>}
-
-       {/* show error message if any error occurs  by using terinary*/}
+      {/* show error message if any error occurs  by using terinary*/}
       {/* { isLoading?<Spinner/>:null}         */}
 
-     
-      {
-        errorMessage?<ErrorMessage message={errorMessage}/> :null
-      }
-      {feedbackItems.map((item)=>{
-        return <FeedbackItems  feebackItems={item}/>
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+      {feedbackItems.map((item) => {
+        return <FeedbackItems feebackItems={item} />;
       })}
-       
     </ol>
-  )
+  );
 }
