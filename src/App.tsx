@@ -1,7 +1,6 @@
 import Container from "./components/Container";
 import Footer from "./components/Footer";
-import HashtagList from "./hashtag/HashtagItem";
-
+import HashtagList from "./components/hashtag/HashtagItem";
 
 export default function App() {
   return (

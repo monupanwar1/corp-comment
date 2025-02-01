@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TFeedbackItem } from "../components/lib/type";
+import { TFeedbackItem } from "../lib/type";
 
 type Store = {
   feedbackItems: TFeedbackItem[];
@@ -88,7 +88,7 @@ export const useFeedbackItemsStore = create<Store>((set, get) => ({
       set(() => ({
         feedbackItems: data.feedbacks,
       }));
-    } catch(error) {
+    } catch (error) {
       set(() => ({
         errorMessage: "Something went wrong. Please try again later.",
       }));
